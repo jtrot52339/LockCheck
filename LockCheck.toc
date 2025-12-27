@@ -1,0 +1,8 @@
+## Interface: 110205
+## Title: LockCheck
+## Notes: Shows Warlock presence and incoming summons to reduce summon coordination friction.
+## Author: Derfla
+## Version: 1.0.0
+## X-License: All Rights Reserved
+
+LockCheck.lua
