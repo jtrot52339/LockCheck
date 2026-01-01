@@ -133,10 +133,13 @@ btn:SetScript("OnClick", function()
     return
   end
 
-  if HasIncomingSummon() then
+  local incoming = HasIncomingSummon()
+  
+  if incoming then
     local summoner = GetSummonSummoner()
     if summoner then
-      SendChatMessage("ty! 🙏", "WHISPER", nil, summoner)
+      C_ChatInfo.SendChatMessage("ty!", "WHISPER", nil, summoner)
+      print("|cff00ff00LockCheck:|r Thanked " .. summoner .. " for the summon.")
     else
       -- Incoming summon exists but summoner is unknown on this client/version.
       print("|cffff8800LockCheck:|r Summon pending, but couldn't determine who started it.")
@@ -146,7 +149,8 @@ btn:SetScript("OnClick", function()
 
   local lock = FindFirstWarlockName()
   if lock then
-    SendChatMessage("summon me when you can pls 🙏", "WHISPER", nil, lock)
+    C_ChatInfo.SendChatMessage("summon me when you can pls", "WHISPER", nil, lock)
+    print("|cff00ff00LockCheck:|r Requested summon from " .. lock .. ".")
   else
     print("|cffff0000LockCheck:|r No Warlock found in group.")
   end
