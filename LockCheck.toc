@@ -2,7 +2,8 @@
 ## Title: LockCheck
 ## Notes: Shows Warlock presence and incoming summons to reduce summon coordination friction.
 ## Author: Derfla
-## Version: 1.0.1
+## Version: 1.0.2
 ## X-License: All Rights Reserved
+## SavedVariables: LockCheckDB
 
 LockCheck.lua

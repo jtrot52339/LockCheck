@@ -20,6 +20,13 @@
 
 local ADDON_NAME = ...
 
+-- Initialize saved variables
+if not LockCheckDB then
+    LockCheckDB = {
+        mode = "whisper"  -- "whisper" or "group"
+    }
+end
+
 -- ------------------------------------------------------------
 -- Utilities
 -- ------------------------------------------------------------
@@ -147,12 +154,27 @@ btn:SetScript("OnClick", function()
     return
   end
 
-  local lock = FindFirstWarlockName()
-  if lock then
-    C_ChatInfo.SendChatMessage("summon me when you can pls", "WHISPER", nil, lock)
-    print("|cff00ff00LockCheck:|r Requested summon from " .. lock .. ".")
-  else
-    print("|cffff0000LockCheck:|r No Warlock found in group.")
+  if LockCheckDB.mode == "whisper" then
+    local lock = FindFirstWarlockName()
+    if lock then
+      C_ChatInfo.SendChatMessage("summon me when you can pls", "WHISPER", nil, lock)
+      print("|cff00ff00LockCheck:|r Requested summon from " .. lock .. ".")
+    else
+      print("|cffff0000LockCheck:|r No Warlock found in group.")
+    end
+  else -- group
+    if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+      C_ChatInfo.SendChatMessage("summon me when you can pls", "INSTANCE_CHAT")
+      print("|cff00ff00LockCheck:|r Requested summon in instance chat.")
+    elseif IsInRaid() then
+      C_ChatInfo.SendChatMessage("summon me when you can pls", "RAID")
+      print("|cff00ff00LockCheck:|r Requested summon in raid chat.")
+    elseif IsInGroup() then
+      C_ChatInfo.SendChatMessage("summon me when you can pls", "PARTY")
+      print("|cff00ff00LockCheck:|r Requested summon in party chat.")
+    else
+      print("|cffff8800LockCheck:|r You are not in a party/raid.")
+    end
   end
 end)
 
@@ -278,6 +300,20 @@ SlashCmdList.LOCKCHECK = function(msg)
     return
   end
 
-  print("|cff00ff00LockCheck:|r Commands:")
+  if msg:find("^mode ") then
+    local mode = msg:gsub("^mode ", "")
+    if mode == "whisper" or mode == "group" then
+      LockCheckDB.mode = mode
+      print("|cff00ff00LockCheck:|r Summon request mode set to " .. mode .. ".")
+    else
+      print("|cffff8800LockCheck:|r Invalid mode. Use 'whisper' or 'group'.")
+    end
+    return
+  end
+
+  print("|cff00ff00LockCheck:|r Current mode: " .. LockCheckDB.mode)
+  print("Commands:")
   print("  /lockcheck reset")
+  print("  /lockcheck mode whisper")
+  print("  /lockcheck mode group")
 end
