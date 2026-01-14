@@ -163,17 +163,21 @@ btn:SetScript("OnClick", function()
       print("|cffff0000LockCheck:|r No Warlock found in group.")
     end
   else -- group
-    if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-      C_ChatInfo.SendChatMessage("summon me when you can pls", "INSTANCE_CHAT")
-      print("|cff00ff00LockCheck:|r Requested summon in instance chat.")
-    elseif IsInRaid() then
-      C_ChatInfo.SendChatMessage("summon me when you can pls", "RAID")
-      print("|cff00ff00LockCheck:|r Requested summon in raid chat.")
-    elseif IsInGroup() then
-      C_ChatInfo.SendChatMessage("summon me when you can pls", "PARTY")
-      print("|cff00ff00LockCheck:|r Requested summon in party chat.")
+    if GroupHasWarlock() then
+      if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+        C_ChatInfo.SendChatMessage("summon me when you can pls", "INSTANCE_CHAT")
+        print("|cff00ff00LockCheck:|r Requested summon in instance chat.")
+      elseif IsInRaid() then
+        C_ChatInfo.SendChatMessage("summon me when you can pls", "RAID")
+        print("|cff00ff00LockCheck:|r Requested summon in raid chat.")
+      elseif IsInGroup() then
+        C_ChatInfo.SendChatMessage("summon me when you can pls", "PARTY")
+        print("|cff00ff00LockCheck:|r Requested summon in party chat.")
+      else
+        print("|cffff8800LockCheck:|r You are not in a party/raid.")
+      end
     else
-      print("|cffff8800LockCheck:|r You are not in a party/raid.")
+      print("|cffff0000LockCheck:|r No Warlock found in group.")
     end
   end
 end)
